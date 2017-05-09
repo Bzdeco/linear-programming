@@ -16,4 +16,9 @@ public class Constraint {
         this.sign = sign;
         this.limit = limit;
     }
+
+    public boolean isSatisfied(Point point) {
+
+        double polynomialValue = polynomial.evaluateForPoint(point);
+    }
 }

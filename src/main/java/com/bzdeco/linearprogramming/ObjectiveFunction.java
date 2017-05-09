@@ -6,9 +6,9 @@ package com.bzdeco.linearprogramming;
 public class ObjectiveFunction {
 
     private Polynomial polynomial;
-    private Goal goal;
+    private ObjectiveFunctionGoal goal;
 
-    public ObjectiveFunction(Polynomial polynomial, Goal goal) {
+    public ObjectiveFunction(Polynomial polynomial, ObjectiveFunctionGoal goal) {
         this.polynomial = polynomial;
         this.goal = goal;
     }

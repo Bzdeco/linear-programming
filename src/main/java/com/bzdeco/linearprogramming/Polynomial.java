@@ -7,9 +7,23 @@ import java.util.List;
  */
 public class Polynomial {
 
-    private List<Variable> variable;
+    private List<Variable> variables;
 
-    public Polynomial(List<Variable> variable) {
-        this.variable = variable;
+    public Polynomial(List<Variable> variables) {
+        this.variables = variables;
+    }
+
+    public double evaluateForPoint(Point point) {
+
+        List<Double> coordinates = point.getCoordinates();
+        double value = 0;
+
+        int i = 0;
+        for(Variable variable : variables) {
+            value += variable.evaluateForValue(coordinates.get(i));
+            i++;
+        }
+
+        return value;
     }
 }

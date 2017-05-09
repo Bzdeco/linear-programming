@@ -7,14 +7,10 @@ public class Variable {
 
     private double coefficient;
     private int exponent;
-    private double lowerBound;
-    private double upperBound;
 
-    public Variable(double coefficient, int exponent, double lowerBound, double upperBound) {
+    public Variable(double coefficient, int exponent) {
         this.coefficient = coefficient;
         this.exponent = exponent;
-        this.lowerBound = lowerBound;
-        this.upperBound = upperBound;
     }
 
     public double evaluateForValue(double value) {
