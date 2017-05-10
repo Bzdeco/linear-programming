@@ -1,4 +1,7 @@
-package com.bzdeco.linearprogramming;
+package com.bzdeco.linearprogramming.math;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by bzdeco on 09.05.17.
@@ -19,5 +22,10 @@ public class Bounds {
 
     public double getUpperBound() {
         return upperBound;
+    }
+
+    public double getBoundsRadius() {
+
+        return (upperBound - lowerBound) / 2.0;
     }
 }

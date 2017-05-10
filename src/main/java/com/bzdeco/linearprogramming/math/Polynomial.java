@@ -1,4 +1,4 @@
-package com.bzdeco.linearprogramming;
+package com.bzdeco.linearprogramming.math;
 
 import java.util.List;
 
@@ -13,14 +13,14 @@ public class Polynomial {
         this.variables = variables;
     }
 
-    public double evaluateForPoint(Point point) {
+    public double evaluateFor(Point point) {
 
         List<Double> coordinates = point.getCoordinates();
         double value = 0;
 
         int i = 0;
         for(Variable variable : variables) {
-            value += variable.evaluateForValue(coordinates.get(i));
+            value += variable.evaluateFor(coordinates.get(i));
             i++;
         }
 

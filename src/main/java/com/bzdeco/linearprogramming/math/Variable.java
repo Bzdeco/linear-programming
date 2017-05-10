@@ -1,4 +1,4 @@
-package com.bzdeco.linearprogramming;
+package com.bzdeco.linearprogramming.math;
 
 /**
  * Created by bzdeco on 09.05.17.
@@ -13,7 +13,7 @@ public class Variable {
         this.exponent = exponent;
     }
 
-    public double evaluateForValue(double value) {
+    public double evaluateFor(double value) {
 
         return coefficient * Math.pow(value, exponent);
     }
