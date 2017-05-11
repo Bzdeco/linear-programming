@@ -5,6 +5,14 @@ package com.bzdeco.linearprogramming.math.limits;
  */
 public class Greater extends Inequality {
 
+    public Greater() {
+        super();
+    }
+
+    public Greater(double limit) {
+        super(limit);
+    }
+
     @Override
     public boolean isSatisfiedWith(double value) {
         return value > limit;

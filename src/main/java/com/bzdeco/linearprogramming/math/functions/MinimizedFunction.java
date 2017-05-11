@@ -12,6 +12,10 @@ import java.util.TreeSet;
  */
 public class MinimizedFunction extends ObjectiveFunction {
 
+    public MinimizedFunction() {
+        super();
+    }
+
     public MinimizedFunction(Polynomial polynomial) {
         super(polynomial);
     }

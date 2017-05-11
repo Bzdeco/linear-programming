@@ -5,6 +5,14 @@ package com.bzdeco.linearprogramming.math.limits;
  */
 public class LowerOrEqual extends Inequality {
 
+    public LowerOrEqual() {
+        super();
+    }
+
+    public LowerOrEqual(double limit) {
+        super(limit);
+    }
+
     @Override
     public boolean isSatisfiedWith(double value) {
         return value <= limit;

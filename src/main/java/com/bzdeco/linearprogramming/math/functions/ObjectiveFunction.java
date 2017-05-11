@@ -4,6 +4,7 @@ import com.bzdeco.linearprogramming.math.Polynomial;
 import com.bzdeco.linearprogramming.math.Point;
 import com.bzdeco.linearprogramming.util.Pair;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
@@ -15,7 +16,18 @@ public abstract class ObjectiveFunction {
 
     protected Polynomial polynomial;
 
+    /**
+     * Constructs objective function with empty polynomial (equal to 0)
+     */
+    public ObjectiveFunction() {
+        this(new Polynomial(new ArrayList<>()));
+    }
+
     public ObjectiveFunction(Polynomial polynomial) {
+        this.polynomial = polynomial;
+    }
+
+    public void setPolynomial(Polynomial polynomial) {
         this.polynomial = polynomial;
     }
 

@@ -7,10 +7,16 @@ public class Variable {
 
     private double coefficient;
     private int exponent;
+    private String name;
 
-    public Variable(double coefficient, int exponent) {
+    public Variable(String name, double coefficient, int exponent) {
+        this.name = name;
         this.coefficient = coefficient;
         this.exponent = exponent;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public double evaluateFor(double value) {

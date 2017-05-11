@@ -6,6 +6,18 @@ package com.bzdeco.linearprogramming.math.limits;
 public abstract class Inequality {
     
     protected double limit;
-    
+
+    public Inequality() {
+        this(0);
+    }
+
+    public Inequality(double limit) {
+        this.limit = limit;
+    }
+
+    public void setLimit(double limit) {
+        this.limit = limit;
+    }
+
     public abstract boolean isSatisfiedWith(double value);
 }

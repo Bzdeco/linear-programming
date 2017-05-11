@@ -9,6 +9,13 @@ public class Point {
 
     private List<Double> coordinates;
 
+    public Point(double ... coords) {
+
+        for(double coord : coords) {
+            coordinates.add(coord);
+        }
+    }
+
     public Point(List<Double> coordinates) {
         this.coordinates = coordinates;
     }
