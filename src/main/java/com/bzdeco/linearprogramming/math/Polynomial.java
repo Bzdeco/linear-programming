@@ -26,4 +26,14 @@ public class Polynomial {
 
         return value;
     }
+
+    @Override
+    public String toString() {
+
+        String polynomial = "";
+        for(Variable var : variables)
+            polynomial += var.toString();
+
+        return polynomial;
+    }
 }

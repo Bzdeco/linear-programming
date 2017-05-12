@@ -28,4 +28,10 @@ public class MaximizedFunction extends ObjectiveFunction {
 
         return sortedEvaluatedPoints.last().getKey();
     }
+
+    @Override
+    public String toString() {
+
+        return "F = " + polynomial.toString() + " → max";
+    }
 }

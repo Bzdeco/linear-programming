@@ -21,4 +21,10 @@ public class Constraint {
 
         return condition.isSatisfiedWith(polynomialValue);
     }
+
+    @Override
+    public String toString() {
+
+        return polynomial.toString() + " " + condition.toString();
+    }
 }

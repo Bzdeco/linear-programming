@@ -1,7 +1,5 @@
 package com.bzdeco.linearprogramming.math;
 
-import com.bzdeco.linearprogramming.Solver;
-
 import java.util.*;
 
 /**
@@ -43,18 +41,16 @@ public class Space {
     public Space getShrunkSpaceAroundPoint(Point point, int convergenceRate) {
 
         List<Double> coordinates = point.getCoordinates();
-        List<Bounds> bounds = getBounds();
+        double boundsLargestRadius = getBoundsLargestRadius();
 
         List<Bounds> shrunkBounds = new ArrayList<>();
 
         int i = 0;
         for(Bounds dimensionBounds : bounds) {
 
-            double radius = dimensionBounds.getBoundsRadius();
-            double newMaximumRadius = radius / convergenceRate;
+            double newMaximumRadius = boundsLargestRadius / convergenceRate;
             double newSpaceCenterCoordinate = coordinates.get(i);
             i++;
-
 
             double newLowerBound;
             double desiredNewLowerBound = newSpaceCenterCoordinate - newMaximumRadius;
@@ -76,8 +72,30 @@ public class Space {
         return new Space(shrunkBounds);
     }
 
+    @Override
+    public String toString() {
+
+        String space = "";
+        for(Bounds dimensionBounds : bounds)
+            space += dimensionBounds.toString() + "\n";
+
+        return space;
+    }
+
     private double getRandomDoubleWithinRange(double min, double max) {
 
         return new Random().nextDouble() * (max - min + 1) + min;
+    }
+
+    private double getBoundsLargestRadius() {
+
+        double maxRadius = 0;
+        for(Bounds dimensionBounds : bounds) {
+            double boundsRadius = dimensionBounds.getBoundsRadius();
+            if(boundsRadius > maxRadius)
+                maxRadius = boundsRadius;
+        }
+
+        return maxRadius;
     }
 }

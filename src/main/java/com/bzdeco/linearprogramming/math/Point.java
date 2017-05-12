@@ -38,4 +38,21 @@ public class Point {
     public int hashCode() {
         return coordinates.hashCode();
     }
+
+    @Override
+    public String toString() {
+
+        String point = "(";
+        for(int i = 0; i < coordinates.size(); i++) {
+
+            point += coordinates.get(i);
+            if(i != coordinates.size() - 1)
+                point += "; ";
+            else
+                point += ")";
+        }
+
+        return point;
+
+    }
 }

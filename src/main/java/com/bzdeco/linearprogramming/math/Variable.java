@@ -23,4 +23,10 @@ public class Variable {
 
         return coefficient * Math.pow(value, exponent);
     }
+
+    @Override
+    public String toString() {
+        String sign = coefficient > 0 ? "+" : "";
+        return sign + coefficient + "(" + name + ")^" + exponent;
+    }
 }

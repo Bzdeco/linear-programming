@@ -28,4 +28,10 @@ public class Bounds {
 
         return (upperBound - lowerBound) / 2.0;
     }
+
+    @Override
+    public String toString() {
+
+        return "[" + lowerBound + "; " + upperBound + "]";
+    }
 }

@@ -28,4 +28,10 @@ public class MinimizedFunction extends ObjectiveFunction {
 
         return sortedEvaluatedPoints.first().getKey();
     }
+
+    @Override
+    public String toString() {
+
+        return "F = " + polynomial.toString() + " → min";
+    }
 }

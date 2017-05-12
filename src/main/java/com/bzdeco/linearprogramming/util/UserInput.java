@@ -25,43 +25,105 @@ public class UserInput {
     public int askForNumberOfVariables() {
 
         System.out.print("Number of decision variables: ");
-        return input.nextInt();
+        int numberOfVariables = input.nextInt();
+        flushScanner();
+
+        return numberOfVariables;
     }
 
     public int askForNumberOfConstraints() {
 
         System.out.print("Number of constraints: ");
-        return input.nextInt();
+        int numberOfConstraints =  input.nextInt();
+        flushScanner();
+
+        return numberOfConstraints;
     }
 
-    public ObjectiveFunction askForObjectiveFunction(List<Variable> variables) {
+    public List<String> askForVariablesNames(int numberOfVariables) {
+
+        List<String> result = new ArrayList<>();
+
+        System.out.println("Variables names:");
+
+        for(int i = 1; i <= numberOfVariables; i++) {
+            System.out.print("\tVariable " + i + ": ");
+            result.add(input.nextLine());
+        }
+
+        return result;
+    }
+
+    public ObjectiveFunction askForObjectiveFunction(List<String> variablesNames) {
 
         String functionType;
 
         Polynomial functionPolynomial;
         ObjectiveFunction function;
 
-        System.out.println("Objective function:");
+        System.out.println("OBJECTIVE FUNCTION");
 
         System.out.print("\tShould the function be MAXIMIZED (max) or MINIMIZED (min): ");
         functionType = input.next();
+        flushScanner();
         function = typesOfFunctions.get(functionType);
 
-        functionPolynomial = askForFunctionPolynomial(variables);
+        functionPolynomial = askForFunctionPolynomial(variablesNames);
         function.setPolynomial(functionPolynomial);
 
         return function;
     }
 
-    public Constraint askForConstraint(int orderNumber, int numberOfDecisionVariables) {
+    public List<Constraint> askForConstraints(List<String> variablesNames) {
+
+        System.out.println("CONSTRAINTS");
+
+        List<Constraint> result = new ArrayList<>();
+        for(int i = 0; i < variablesNames.size(); i++)
+            result.add(askForConstraint(i + 1, variablesNames));
+
+        return result;
+    }
+
+    public Space askForSpace(List<String> variablesNames) {
+
+        System.out.println("VARIABLES BOUNDS");
+
+        List<Bounds> spaceBounds = new ArrayList<>();
+        for(String name : variablesNames)
+            spaceBounds.add(askForVariableBounds(name));
+
+        return new Space(spaceBounds);
+    }
+
+    private Variable askForVariable(String name) {
+
+        double coefficient;
+        int exponent;
+
+        System.out.println("\tVariable \"" + name + "\":");
+
+        System.out.print("\t\tCoefficient: ");
+        coefficient = input.nextDouble();
+        flushScanner();
+
+        System.out.print("\t\tExponent: ");
+        exponent = input.nextInt();
+        flushScanner();
+
+        return new Variable(name, coefficient, exponent);
+    }
+
+    private Constraint askForConstraint(int orderNumber, List<String> variablesNames) {
 
         List<Variable> variables = new ArrayList<>();
         Inequality constraintBound;
+        int numberOfDecisionVariables = variablesNames.size();
 
         System.out.println("Constraint " + orderNumber + ":");
 
-        for(int i = 1; i <= numberOfDecisionVariables; i++)
-            variables.add(askForVariable(i));
+        for(int i = 0; i < numberOfDecisionVariables; i++)
+            variables.add(askForVariable(variablesNames.get(i)));
 
         constraintBound = askForInequality();
 
@@ -71,36 +133,6 @@ public class UserInput {
         );
     }
 
-    public Space askForSpace(List<Variable> variables) {
-
-        List<Bounds> spaceBounds = new ArrayList<>();
-
-        for(Variable variable : variables)
-            spaceBounds.add(askForVariableBounds(variable.getName()));
-
-        return new Space(spaceBounds);
-    }
-
-    private Variable askForVariable(int orderNumber) {
-
-        String name;
-        double coefficient;
-        int exponent;
-
-        System.out.println("\tVariable " + orderNumber + ":");
-
-        System.out.print("\t\tName: ");
-        name = input.next();
-
-        System.out.print("\n\t\tCoefficient: ");
-        coefficient = input.nextDouble();
-
-        System.out.print("\n\t\tExponent: ");
-        exponent = input.nextInt();
-
-        return new Variable(name, coefficient, exponent);
-    }
-
     private Bounds askForVariableBounds(String variableName) {
 
         double lowerBound, upperBound;
@@ -108,9 +140,11 @@ public class UserInput {
 
         System.out.print("\tLower bound: ");
         lowerBound = input.nextDouble();
+        flushScanner();
 
-        System.out.print("\n\tUpper bound: ");
+        System.out.print("\tUpper bound: ");
         upperBound = input.nextDouble();
+        flushScanner();
 
         return new Bounds(lowerBound, upperBound);
     }
@@ -120,11 +154,13 @@ public class UserInput {
         String sign;
         double limit;
 
-        System.out.print("\n\t\tSign of constraint (<, <=, >, >=): ");
+        System.out.print("\t\tSign of constraint (<, <=, >, >=): ");
         sign = input.next();
+        flushScanner();
 
-        System.out.println("\n\t\tLimit: ");
+        System.out.print("\t\tLimit: ");
         limit = input.nextDouble();
+        flushScanner();
 
         Inequality inequality = signsOfConstraints.get(sign);
         inequality.setLimit(limit);
@@ -132,24 +168,28 @@ public class UserInput {
         return inequality;
     }
 
-    private Polynomial askForFunctionPolynomial(List<Variable> variables) {
+    private Polynomial askForFunctionPolynomial(List<String> variablesNames) {
 
         double coefficient;
         int exponent;
 
         List<Variable> functionPolynomialVariables = new ArrayList<>();
 
-        System.out.print("\tFunction variables:");
-        for(Variable variable : variables) {
+        System.out.println("\tFunction variables:");
+        for(String name : variablesNames) {
 
-            System.out.print("\n\t\tCoefficient: ");
+            System.out.println("\t\tVariable \"" + name + "\":");
+
+            System.out.print("\t\t\tCoefficient: ");
             coefficient = input.nextDouble();
+            flushScanner();
 
-            System.out.print("\n\t\tExponent: ");
+            System.out.print("\t\t\tExponent: ");
             exponent = input.nextInt();
+            flushScanner();
 
             functionPolynomialVariables.add(new Variable(
-                    variable.getName(),
+                    name,
                     coefficient,
                     exponent
             ));
@@ -176,5 +216,9 @@ public class UserInput {
         result.put("min", new MinimizedFunction());
 
         return result;
+    }
+
+    private void flushScanner() {
+        input.nextLine();
     }
 }

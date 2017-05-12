@@ -10,7 +10,7 @@ import java.util.*;
 /**
  * Created by bzdeco on 09.05.17.
  */
-public class Solver {
+public class MonteCarloSolver {
 
     /**
      * Determines how many times space will be shrunk in each dimension after each iteration
@@ -22,7 +22,7 @@ public class Solver {
     private List<Constraint> constraints;
     private Space space;
 
-    public Solver(ObjectiveFunction function, List<Constraint> constraints, Space space) {
+    public MonteCarloSolver(ObjectiveFunction function, List<Constraint> constraints, Space space) {
         this.function = function;
         this.constraints = constraints;
         this.space = space;
@@ -36,7 +36,7 @@ public class Solver {
         this.numberOfProbes = numberOfProbes;
     }
 
-    public List<Solver> getShrunkProblems(int numberOfNewProblems) {
+    public List<MonteCarloSolver> getShrunkProblems(int numberOfNewProblems) {
 
         Set<Point> pointsSatisfyingAllConditions = findPointsSatisfyingAllConditions();
         Set<Point> chosenBestPoints = function.getBestPoints(
@@ -44,11 +44,11 @@ public class Solver {
                 numberOfNewProblems
         );
 
-        List<Solver> solversForNextIteration = new ArrayList<>();
+        List<MonteCarloSolver> solversForNextIteration = new ArrayList<>();
         for(Point point : chosenBestPoints) {
 
             Space narrowedDownSpace = space.getShrunkSpaceAroundPoint(point, convergenceRate);
-            solversForNextIteration.add(new Solver(
+            solversForNextIteration.add(new MonteCarloSolver(
                     this.function,
                     this.constraints,
                     narrowedDownSpace
@@ -56,6 +56,20 @@ public class Solver {
         }
 
         return solversForNextIteration;
+    }
+
+    @Override
+    public String toString() {
+
+        String solverState = "Objective function:\n" + function + "\n";
+
+        String constraintsText = "";
+        for(Constraint constraint : constraints)
+            constraintsText += constraint + "\n";
+
+        solverState += "Constraints:\n" + constraintsText + "Bounds:\n" + space;
+
+        return solverState;
     }
 
     private Set<Point> findPointsSatisfyingAllConditions() {

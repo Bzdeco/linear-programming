@@ -17,4 +17,10 @@ public class Lower extends Inequality {
     public boolean isSatisfiedWith(double value) {
         return value < limit;
     }
+
+    @Override
+    public String toString() {
+
+        return "< " + limit;
+    }
 }
