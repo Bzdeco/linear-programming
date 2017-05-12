@@ -16,15 +16,24 @@ public class Application {
 
     public static void main(String[] args) {
 
+        // Ask for problem parameters
         int numberOfVariables = userInput.askForNumberOfVariables();
         int numberOfConstraints = userInput.askForNumberOfConstraints();
         List<String> variablesNames = userInput.askForVariablesNames(numberOfVariables);
-
         ObjectiveFunction objectiveFunction = userInput.askForObjectiveFunction(variablesNames);
         List<Constraint> constraints = userInput.askForConstraints(variablesNames);
         Space space = userInput.askForSpace(variablesNames);
 
+        // Setup Monte Carlo solver
         MonteCarloSolver solver = new MonteCarloSolver(objectiveFunction, constraints, space);
+        solver.setNumberOfProbes(1000);
+        solver.setConvergenceRate(100);
+        solver.setPrecision(1e-5);
+
+        while(!solver.isSolutionAccurate()) {
+            solver = solver.reduceToNewProblems(1).get(0);
+        }
+
         System.out.println(solver);
     }
 }

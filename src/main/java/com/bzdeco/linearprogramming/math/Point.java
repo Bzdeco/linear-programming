@@ -1,5 +1,6 @@
 package com.bzdeco.linearprogramming.math;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,6 +12,7 @@ public class Point {
 
     public Point(double ... coords) {
 
+        coordinates = new ArrayList<>();
         for(double coord : coords) {
             coordinates.add(coord);
         }

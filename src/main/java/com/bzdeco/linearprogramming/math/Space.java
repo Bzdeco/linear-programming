@@ -8,15 +8,24 @@ import java.util.*;
 public class Space {
 
     private List<Bounds> bounds;
-    private int dimension;
+    private Point center;
 
     public Space(List<Bounds> bounds) {
         this.bounds = bounds;
-        dimension = bounds.size();
+        this.center = getInitialCenterPoint();
+    }
+
+    public Space(List<Bounds> bounds, Point center) {
+        this(bounds);
+        this.center = center;
     }
 
     public List<Bounds> getBounds() {
         return bounds;
+    }
+
+    public Point getCenter() {
+        return center;
     }
 
     public Set<Point> getRandomPoints(int numberOfPointsToGenerate) {
@@ -69,7 +78,19 @@ public class Space {
             shrunkBounds.add(new Bounds(newLowerBound, newUpperBound));
         }
 
-        return new Space(shrunkBounds);
+        return new Space(shrunkBounds, point);
+    }
+
+    public double getBoundsLargestRadius() {
+
+        double maxRadius = 0;
+        for(Bounds dimensionBounds : bounds) {
+            double boundsRadius = dimensionBounds.getBoundsRadius();
+            if(boundsRadius > maxRadius)
+                maxRadius = boundsRadius;
+        }
+
+        return maxRadius;
     }
 
     @Override
@@ -84,18 +105,16 @@ public class Space {
 
     private double getRandomDoubleWithinRange(double min, double max) {
 
-        return new Random().nextDouble() * (max - min + 1) + min;
+        return new Random().nextDouble() * (max - min) + min;
     }
 
-    private double getBoundsLargestRadius() {
+    private Point getInitialCenterPoint() {
 
-        double maxRadius = 0;
+        List<Double> coordinates = new ArrayList<>();
         for(Bounds dimensionBounds : bounds) {
-            double boundsRadius = dimensionBounds.getBoundsRadius();
-            if(boundsRadius > maxRadius)
-                maxRadius = boundsRadius;
+            coordinates.add(dimensionBounds.getCenter());
         }
 
-        return maxRadius;
+        return new Point(coordinates);
     }
 }

@@ -27,25 +27,11 @@ public abstract class ObjectiveFunction {
         this.polynomial = polynomial;
     }
 
+    public abstract Point getBestPoint(Set<Point> pointsToChooseFrom);
+
     public void setPolynomial(Polynomial polynomial) {
         this.polynomial = polynomial;
     }
-
-    public double evaluateFor(Point point) {
-        return polynomial.evaluateFor(point);
-    }
-
-    public Set<Pair<Point, Double>> applyFor(Set<Point> points) {
-
-        Set<Pair<Point, Double>> result = new HashSet<>();
-
-        for(Point point : points)
-            result.add(new Pair<>(point, evaluateFor(point)));
-
-        return result;
-    }
-
-    public abstract Point getBestPoint(Set<Point> pointsToChooseFrom);
 
     public Set<Point> getBestPoints(Set<Point> pointsToChooseFrom, int numberOfPoints) {
 
@@ -57,6 +43,16 @@ public abstract class ObjectiveFunction {
             pointsToChooseFrom.remove(nextBestPoint);
             result.add(nextBestPoint);
         }
+
+        return result;
+    }
+
+    protected Set<Pair<Point, Double>> applyFor(Set<Point> points) {
+
+        Set<Pair<Point, Double>> result = new HashSet<>();
+
+        for(Point point : points)
+            result.add(new Pair<>(point, polynomial.evaluateFor(point)));
 
         return result;
     }

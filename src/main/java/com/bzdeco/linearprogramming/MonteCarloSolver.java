@@ -16,7 +16,11 @@ public class MonteCarloSolver {
      * Determines how many times space will be shrunk in each dimension after each iteration
      */
     private int convergenceRate = 2;
-    private int numberOfProbes = 1000;
+    /**
+     * Determines size of radius of space which center can be treated as accurate solution
+     */
+    private double precision = 0.0001;
+    private int numberOfProbes = 100;
 
     private ObjectiveFunction function;
     private List<Constraint> constraints;
@@ -36,7 +40,11 @@ public class MonteCarloSolver {
         this.numberOfProbes = numberOfProbes;
     }
 
-    public List<MonteCarloSolver> getShrunkProblems(int numberOfNewProblems) {
+    public void setPrecision(double precision) {
+        this.precision = precision;
+    }
+
+    public List<MonteCarloSolver> reduceToNewProblems(int numberOfNewProblems) {
 
         Set<Point> pointsSatisfyingAllConditions = findPointsSatisfyingAllConditions();
         Set<Point> chosenBestPoints = function.getBestPoints(
@@ -56,6 +64,11 @@ public class MonteCarloSolver {
         }
 
         return solversForNextIteration;
+    }
+
+    public boolean isSolutionAccurate() {
+
+        return space.getBoundsLargestRadius() <= precision;
     }
 
     @Override
