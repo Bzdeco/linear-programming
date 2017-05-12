@@ -19,6 +19,11 @@ public class Lower extends Inequality {
     }
 
     @Override
+    public Inequality copy() {
+        return new Lower();
+    }
+
+    @Override
     public String toString() {
 
         return "< " + limit;

@@ -74,12 +74,12 @@ public class UserInput {
         return function;
     }
 
-    public List<Constraint> askForConstraints(List<String> variablesNames) {
+    public List<Constraint> askForConstraints(int numberOfConstraints, List<String> variablesNames) {
 
         System.out.println("CONSTRAINTS");
 
         List<Constraint> result = new ArrayList<>();
-        for(int i = 0; i < variablesNames.size(); i++)
+        for(int i = 0; i < numberOfConstraints; i++)
             result.add(askForConstraint(i + 1, variablesNames));
 
         return result;
@@ -162,7 +162,7 @@ public class UserInput {
         limit = input.nextDouble();
         flushScanner();
 
-        Inequality inequality = signsOfConstraints.get(sign);
+        Inequality inequality = signsOfConstraints.get(sign).copy();
         inequality.setLimit(limit);
 
         return inequality;

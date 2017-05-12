@@ -20,4 +20,6 @@ public abstract class Inequality {
     }
 
     public abstract boolean isSatisfiedWith(double value);
+
+    public abstract Inequality copy();
 }

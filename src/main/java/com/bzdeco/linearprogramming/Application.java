@@ -21,19 +21,28 @@ public class Application {
         int numberOfConstraints = userInput.askForNumberOfConstraints();
         List<String> variablesNames = userInput.askForVariablesNames(numberOfVariables);
         ObjectiveFunction objectiveFunction = userInput.askForObjectiveFunction(variablesNames);
-        List<Constraint> constraints = userInput.askForConstraints(variablesNames);
+        List<Constraint> constraints = userInput.askForConstraints(numberOfConstraints, variablesNames);
         Space space = userInput.askForSpace(variablesNames);
 
         // Setup Monte Carlo solver
         MonteCarloSolver solver = new MonteCarloSolver(objectiveFunction, constraints, space);
         solver.setNumberOfProbes(1000);
-        solver.setConvergenceRate(100);
+        solver.setConvergenceRate(2);
         solver.setPrecision(1e-5);
 
+        // Display entered input
+        System.out.println(solver);
+
+        // Run solver
+        int numberOfIterations = 0;
         while(!solver.isSolutionAccurate()) {
             solver = solver.reduceToNewProblems(1).get(0);
+            numberOfIterations++;
         }
 
-        System.out.println(solver);
+        // Display result
+        System.out.println("Number of iterations: " + numberOfIterations);
+        System.out.println("Solution:");
+        System.out.println(solver.getSolution());
     }
 }

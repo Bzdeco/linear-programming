@@ -19,6 +19,11 @@ public class Greater extends Inequality {
     }
 
     @Override
+    public Inequality copy() {
+        return new Greater();
+    }
+
+    @Override
     public String toString() {
 
         return "> " + limit;

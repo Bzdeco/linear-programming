@@ -66,6 +66,11 @@ public class MonteCarloSolver {
         return solversForNextIteration;
     }
 
+    public Point getSolution() {
+
+        return space.getCenter();
+    }
+
     public boolean isSolutionAccurate() {
 
         return space.getBoundsLargestRadius() <= precision;

@@ -19,6 +19,11 @@ public class GreaterOrEqual extends Inequality {
     }
 
     @Override
+    public Inequality copy() {
+        return new GreaterOrEqual();
+    }
+
+    @Override
     public String toString() {
 
         return "≥ " + limit;
