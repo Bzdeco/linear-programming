@@ -4,6 +4,7 @@ import com.bzdeco.linearprogramming.math.Constraint;
 import com.bzdeco.linearprogramming.math.Space;
 import com.bzdeco.linearprogramming.math.functions.ObjectiveFunction;
 import com.bzdeco.linearprogramming.math.Point;
+import com.bzdeco.linearprogramming.util.Pair;
 
 import java.util.*;
 
@@ -22,14 +23,25 @@ public class MonteCarloSolver {
     private double precision = 0.0001;
     private int numberOfProbes = 100;
 
-    private ObjectiveFunction function;
-    private List<Constraint> constraints;
-    private Space space;
+    protected ObjectiveFunction function;
+    protected List<Constraint> constraints;
+    protected Space space;
 
     public MonteCarloSolver(ObjectiveFunction function, List<Constraint> constraints, Space space) {
         this.function = function;
         this.constraints = constraints;
         this.space = space;
+    }
+
+    public Pair<Point, Integer> solve() {
+
+        int numberOfIterations = 0;
+        while(!isSolutionAccurate()) {
+            reduceToSmallerProblem();
+            numberOfIterations++;
+        }
+
+        return new Pair<>(getSolution(), numberOfIterations);
     }
 
     public void setConvergenceRate(int convergenceRate) {
@@ -44,7 +56,15 @@ public class MonteCarloSolver {
         this.precision = precision;
     }
 
-    public List<MonteCarloSolver> reduceToNewProblems(int numberOfNewProblems) {
+    public void reduceToSmallerProblem() {
+
+        Set<Point> pointsSatisfyingAllConditions = findPointsSatisfyingAllConditions();
+        Point chosenBestPoint = function.getBestPoint(pointsSatisfyingAllConditions);
+
+        space = space.getShrunkSpaceAroundPoint(chosenBestPoint, convergenceRate);
+    }
+
+    public List<MonteCarloSolver> reduceToSmallerProblems(int numberOfNewProblems) {
 
         Set<Point> pointsSatisfyingAllConditions = findPointsSatisfyingAllConditions();
         Set<Point> chosenBestPoints = function.getBestPoints(

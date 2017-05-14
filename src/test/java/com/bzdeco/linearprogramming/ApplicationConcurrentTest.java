@@ -1,21 +1,22 @@
 package com.bzdeco.linearprogramming;
 
+import com.bzdeco.linearprogramming.concurrency.ConcurrentMonteCarloSolver;
 import com.bzdeco.linearprogramming.math.*;
 import com.bzdeco.linearprogramming.math.functions.MinimizedFunction;
 import com.bzdeco.linearprogramming.math.functions.ObjectiveFunction;
 import com.bzdeco.linearprogramming.math.limits.GreaterOrEqual;
-import com.bzdeco.linearprogramming.util.Pair;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by bzdeco on 12.05.17.
+ * Created by bzdeco on 14.05.17.
  */
-public class ApplicationTest {
+public class ApplicationConcurrentTest {
+
     @Test
-    public void exampleProblemSolving() throws Exception {
+    public void exampleProblemSolvingWithThreads() throws Exception {
 
         // Example problem:
         // F = 6x + 9y -> min
@@ -23,6 +24,8 @@ public class ApplicationTest {
         // 8x + 4y >= 32
         // 12x + 3y >= 36
         // x, y >= 0
+
+        int numberOfThreads = 10;
 
         List<Variable> functionPolynomialVariables = new ArrayList<>();
         functionPolynomialVariables.add(new Variable("x", 6, 1));
@@ -56,18 +59,36 @@ public class ApplicationTest {
         Space space = new Space(bounds);
 
 
-        MonteCarloSolver solver = new MonteCarloSolver(minFunction, constraints, space);
+        ConcurrentMonteCarloSolver solver = new ConcurrentMonteCarloSolver(minFunction, constraints, space);
         solver.setNumberOfProbes(1000);
         solver.setConvergenceRate(2);
         solver.setPrecision(1e-5);
 
         System.out.println(solver);
 
-        Pair<Point, Integer> solution = solver.solve();
+        // Run threads solving problem
+        List<Thread> threads = new ArrayList<>();
+        for(int i = 0; i < numberOfThreads; ++i) {
 
-        System.out.println("Number of iterations: " + solution.getValue());
-        System.out.println("Solution:");
-        System.out.println(solution.getKey());
+            Thread solverThread = new Thread(solver);
+
+            threads.add(solverThread);
+            solverThread.start();
+        }
+
+        // Wait for all threads to finish
+        for(int i = 0; i < numberOfThreads; ++i) {
+            try {
+                threads.get(i).join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        System.out.println("Solutions:");
+        System.out.println(solver.getSolutions());
+        System.out.println("Best solution:");
+        System.out.println(solver.getSolution());
     }
 
 }
