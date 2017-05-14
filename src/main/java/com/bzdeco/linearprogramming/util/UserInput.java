@@ -22,6 +22,15 @@ public class UserInput {
         this.input = new Scanner(System.in);
     }
 
+    public int askForNumberOfThreads() {
+
+        System.out.println("Number of threads to run the solver on: ");
+        int numberOfThreads = input.nextInt();
+        flushScanner();
+
+        return numberOfThreads;
+    }
+
     public int askForNumberOfVariables() {
 
         System.out.print("Number of decision variables: ");
