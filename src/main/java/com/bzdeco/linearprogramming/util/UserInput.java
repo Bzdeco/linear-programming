@@ -24,7 +24,7 @@ public class UserInput {
 
     public int askForNumberOfThreads() {
 
-        System.out.println("Number of threads to run the solver on: ");
+        System.out.print("Number of threads to run the solver on: ");
         int numberOfThreads = input.nextInt();
         flushScanner();
 

@@ -6,6 +6,7 @@ import com.bzdeco.linearprogramming.math.Space;
 import com.bzdeco.linearprogramming.math.functions.ObjectiveFunction;
 import com.bzdeco.linearprogramming.util.UserInput;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ import java.util.List;
 public class ApplicationConcurrent {
 
     private static UserInput userInput = new UserInput();
-    private static List<Thread> threads;
+    private static List<Thread> threads = new ArrayList<>();
 
     public static void main(String[] args) {
 
